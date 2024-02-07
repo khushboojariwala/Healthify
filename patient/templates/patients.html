@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Parties
+{% endblock %}
+
+{% block body %}
+<section class="bg-gray-50 dark:bg-gray-900 py-3 sm:py-5">
+    <div class="px-4 mx-auto max-w-screen-2xl lg:px-12">
+        <div class="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
+            <div
+                class="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
+                <div class="flex items-center flex-1 space-x-4">
+                    <h5>
+                        <span class="text-gray-500">Patients List</span>
+                    </h5>
+                </div>
+                <div class="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center lg:justify-end md:space-y-0 md:space-x-3">
+                    <button type="button"
+                            class="flex items-center justify-center px-3 py-2 text-sm font-medium text-gray-900 bg-blue-400 border border-gray-200 rounded-lg dark:bg-gray-800 dark:text-gray-400 p-2 whitespace-nowrap">
+                        <a href="{% url 'add_patients'%}">
+                        Add Patients
+                        </a>
+                    </button>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-4 py-3">Full Name</th>
+                            <th scope="col" class="px-4 py-3">Mobile</th>
+                            <th scope="col" class="px-4 py-3">DoctorId</th>
+                            <th scope="col" class="px-4 py-3">Report Type</th>
+                            <th scope="col" class="px-4 py-3">Payment Status</th>
+                            <th scope="col" class="px-4 py-3">Payment Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="text-sm divide-y divide-gray-100">
+                        {% if patients|length == 0 %}
+                        <tr class="bg-white dark:bg-gray-800">
+                            <td colspan="6" class="px-6 py-4 text-center text-xl">
+                                No patients available.
+                            </td>
+                        </tr>
+                        {% else %}
+                        {% for patient in patients %}
+                        <tr>
+                            <td class="p-2 whitespace-nowrap ">
+                                <div class="flex items-center">
+                                    <!-- <div class="w-10 h-10 flex-shrink-0">
+                                    <img class="rounded-full"
+                                        src="https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-05.jpg"
+                                        alt="Alex Shatov">
+                                </div> -->
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex flex-col">
+                                            <p
+                                                class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal">
+                                                {{patient.first_name}} {{patient.last_name}}</p>
+                                        </div>
+                                    </div>
+
+                            </td>
+                            <td class="p-2 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex flex-col">
+                                        <p
+                                            class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal">
+                                            {{patient.mobile}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="p-2 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex flex-col">
+                                        <p
+                                            class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal">
+                                            {{patient.doctor_id}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="p-2 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    <div class="flex flex-col">
+                                        <p
+                                            class="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-normal">
+                                            {{patient.report_type}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="p-2 whitespace-nowrap">
+                                {% if patient.payment_status == 'Pending' %}
+                                <div class="text-left font-medium text-red-500">
+                                    <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                    {{patient.payment_status}}
+                                </div>
+                                {% elif patient.payment_status == 'Partially' %}
+                                <div class="text-left font-medium text-yellow-500">
+                                    <i class="fa fa-adjust" aria-hidden="true"></i>
+                                    {{patient.payment_status}}
+                                </div>
+                                {% elif patient.payment_status == 'Done' %}
+                                <div class="text-left font-medium text-green-500">
+                                    <i class="fa fa-circle" aria-hidden="true"></i>
+                                    {{patient.payment_status}}
+                                </div>
+                                {% endif %}
+
+                            </td>
+                            <td class="p-2 whitespace-nowrap ">
+                                <div class="flex">
+                                    <a href="{% url 'patient_account' patient_id=patient.id %}"
+                                        class="text-orange-500"><i class="fa fa-inr fa-2x mr-2"
+                                            aria-hidden="true"></i></a>
+                                    |
+                                    <a href="{% url 'patient_update' patient_id=patient.id %}" class="text-blue-500"><i
+                                            class="fa fa-pencil-square-o fa-2x mx-2" aria-hidden="true"></i></a>
+                                    |
+                                    <a href="{% url 'patient_delete' patient_id=patient.id %}" class="text-red-500"><i
+                                            class="fa fa-trash fa-2x ml-2" aria-hidden="true"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            <nav class="flex flex-col items-start justify-between p-4 space-y-3 md:flex-row md:items-center md:space-y-0"
+                aria-label="Table navigation">
+                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    Showing
+                    <span class="font-semibold text-gray-900 dark:text-white">1</span>
+                    of
+                    <span class="font-semibold text-gray-900 dark:text-white">1000</span>
+                </span>
+            </nav>
+        </div>
+    </div>
+</section>
+
+{% endblock%}
